@@ -29,13 +29,12 @@ const generateEnemies = () => {
   }
 };
 
-// Enemies our player must avoid
+/**
+ * Enemies our player must avoid.
+ * @constructor
+ */
 class Enemy {
-  // Variables applied to each of our instances go here,
-  // we've provided one for you to get started
-
-  // The image/sprite for our enemies, this uses
-  // a helper we've provided to easily load images
+  /** Constructor of the enemy class. */
   constructor() {
     this.sprite = 'images/enemy-bug.png';
     this.x = 500 * Math.random();
@@ -44,7 +43,8 @@ class Enemy {
     this.vy = 0;
   }
 
-  handleCollision() {
+  /** Check if current enemy hits the player. */
+  checkCollision() {
     const dx = this.x - player.x;
     const dy = this.y - player.y;
     if (Math.abs(dx) <= 51 && Math.abs(dy) <= 51) {
@@ -55,17 +55,18 @@ class Enemy {
     }
   }
 
+  /** Change current enemy's direction */
   turnX() {
     this.vx = -this.vx;
   }
 
-  // Update the enemy's position, required method for game
-  // Parameter: dt, a time delta between ticks
+  /**
+   * Update the enemy's position, required method for game.
+   * @param {number} dt a time delta between ticks
+  */
   update(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    this.handleCollision();
+    // Check if there is a collision.
+    this.checkCollision();
     this.x += dt * this.vx;
     if (this.x > EnemyMaxX) {
       this.turnX();
@@ -76,17 +77,18 @@ class Enemy {
     this.y += dt * this.vy;
   }
 
-  // Draw the enemy on the screen, required method for game
+  /** Draw the enemy on the screen, required method for game. */
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
 }
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-
+/**
+ * The player.
+ * @constructor
+ */
 class Player {
+  /** Constructor of the player class. */
   constructor() {
     this.x = 200;
     this.y = 450;
@@ -95,21 +97,25 @@ class Player {
     this.sprite = 'images/char-boy.png';
   }
 
+  /** Check X-axis borders. */
   checkX() {
     if (this.x < PlayerMinX && this.vx < 0) this.vx = 0;
     if (this.x > PlayerMaxX && this.vx > 0) this.vx = 0;
   }
 
+  /** Check Y-axis borders. */
   checkY() {
     if (this.y < PlayerMinY && this.vy < 0) this.vy = 0;
     if (this.y > PlayerMaxY && this.vy > 0) this.vy = 0;
   }
 
+  /** Check borders. */
   checkBorder() {
     this.checkX();
     this.checkY();
   }
 
+  /** Check if the player wins. */
   checkWin() {
     if (this.y <= -19) {
       const winTimes = parseInt(myStorage.getItem('winTimes'), 10) + 1;
@@ -119,7 +125,7 @@ class Player {
     }
   }
 
-  // reset player's position to restart the game
+  /** Reset the player's position, regenerate enemies and restart the game. */
   restart() {
     this.x = 200;
     this.y = 450;
@@ -128,6 +134,10 @@ class Player {
     generateEnemies();
   }
 
+  /**
+   * Triggered when any arrow key is pressed.
+   * @param {string} direction The direction the player will move towards,
+  */
   handleMoveStart(direction) {
     switch (direction) {
     case 'left':
@@ -147,11 +157,27 @@ class Player {
     this.checkBorder();
   }
 
-  handleMoveEnd() {
-    this.vx = 0;
-    this.vy = 0;
+  /**
+   * Triggered when any arrow key is released.
+   * @param {string} direction The direction the player will stop moving towards.
+  */
+  handleMoveEnd(direction) {
+    switch (direction) {
+    case 'left' || 'right':
+      this.vx = 0;
+      break;
+    case 'up' || 'down':
+      this.vy = 0;
+      break;
+    default:
+    }
   }
 
+
+  /**
+   * Update the player's position, required method for game.
+   * @param {number} dt a time delta between ticks
+   */
   update(dt) {
     this.x += dt * this.vx;
     this.y += dt * this.vy;
@@ -160,7 +186,7 @@ class Player {
   }
 
 
-  // Draw the player on the screen.
+  /** Draw the player on the screen. */
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }

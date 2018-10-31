@@ -1,2 +1,9 @@
+# Dependencies
 node_modules
+
+# Outputs
+out
+
+# IDEs
 .idea
+.vscode

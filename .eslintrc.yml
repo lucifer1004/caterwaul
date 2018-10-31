@@ -20,7 +20,7 @@ rules:
     - error
     - always
   max-len: [2, 120]
-  require-jsdoc: 0
+  require-jsdoc: 1
   no-undef: 1
   no-unused-vars: 1
   no-invalid-this: 1
