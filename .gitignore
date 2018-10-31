@@ -7,3 +7,6 @@ out
 # IDEs
 .idea
 .vscode
+
+# Deloy
+now.json
