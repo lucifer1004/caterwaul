@@ -19,17 +19,9 @@ const Engine = (function(global) {
      * set the canvas elements height/width and add it to the DOM.
      */
   const doc = global.document;
-
-
   const win = global.window;
-
-
   const canvas = doc.createElement('canvas');
-
-
   const ctx = canvas.getContext('2d');
-
-
   let lastTime;
 
   canvas.width = 505;
@@ -103,7 +95,7 @@ const Engine = (function(global) {
     allEnemies.forEach(function(enemy) {
       enemy.update(dt);
     });
-    player.update();
+    player.update(dt);
   }
 
   /* This function initially draws the "game level", it will then call
