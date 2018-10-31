@@ -163,10 +163,16 @@ class Player {
   */
   handleMoveEnd(direction) {
     switch (direction) {
-    case 'left' || 'right':
+    case 'left':
       this.vx = 0;
       break;
-    case 'up' || 'down':
+    case 'right':
+      this.vx = 0;
+      break;
+    case 'up':
+      this.vy = 0;
+      break;
+    case 'down':
       this.vy = 0;
       break;
     default:
