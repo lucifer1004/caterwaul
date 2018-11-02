@@ -45,6 +45,7 @@ export default class Game {
     if (this.info.lives === 0) {
       console.log('You lose!');
       this.restartFromOne();
+      this.pause();
     }
   }
 

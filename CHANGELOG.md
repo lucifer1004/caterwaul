@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.0]
 
+### Added
+
+- Users can press P to pause the game, and press any other key to resume.
+
 ### Changed
 
 - The source code is completely refactored. Now it is much more structured.
