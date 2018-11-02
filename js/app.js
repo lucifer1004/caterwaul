@@ -34,6 +34,37 @@ const generateEnemies = () => {
 };
 
 /**
+   * Play sounds.
+   * @constructor
+   */
+class Sound {
+  /**
+   * Constructor of the Sound class.
+   * @param {string} src Source audio file.
+   */
+  constructor(src) {
+    this.sound = document.createElement('audio');
+    this.sound.src = src;
+    this.sound.setAttribute('preload', 'auto');
+    this.sound.setAttribute('controls', 'none');
+    this.sound.playbackRate = 8;
+    this.sound.style.display = 'none';
+    document.body.appendChild(this.sound);
+  }
+
+  play() {
+    this.sound.play();
+  }
+
+  stop() {
+    this.sound.pause();
+  }
+}
+
+const crashSound = new Sound('./audio/crash.mp3');
+const levelUpSound = new Sound('./audio/level-up.mp3');
+
+/**
  * Enemies our player must avoid.
  * @constructor
  */
@@ -59,6 +90,8 @@ class Enemy {
     const dy = this.y - player.y;
     if (Math.abs(dx) <= 51 && Math.abs(dy) <= 51) {
       status.loseLife();
+      crashSound.play();
+      // crashSound.stop();
       this.makeInvisible();
     }
   }
@@ -132,6 +165,7 @@ class Player {
   checkWin() {
     if (this.y <= -19) {
       status.levelUp();
+      levelUpSound.play();
       this.restart();
       generateEnemies();
     }
@@ -236,7 +270,7 @@ class Status {
       return level === this.best;
     }) !== undefined) {
       if (player.unlockedChar < 5) {
-        alert(`New character unlocked: ${Characters[player.unlockedChar]}`);
+        ctx.fillText(`New character unlocked: ${Characters[player.unlockedChar]}`, 20, 280);
         player.unlockedChar ++;
       }
     }
@@ -258,7 +292,7 @@ class Status {
     if (this.lives === 0) {
       const loseTimes = parseInt(myStorage.getItem('loseTimes'), 10) + 1;
       myStorage.setItem('loseTimes', loseTimes);
-      alert(`You have lost ${times(loseTimes)}! Please try again!`);
+      console.log(`You have lost ${times(loseTimes)}! Please try again!`);
       player.restart();
       status.restart();
       generateEnemies();

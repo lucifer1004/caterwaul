@@ -6,7 +6,7 @@
   "author": "Gabriel Wu <qqbbnease1004@126.com>",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint **/*.js --fix"
+    "lint": "eslint **/*.js src/**/*.js --fix"
   },
   "devDependencies": {
     "eslint": "^5.8.0",

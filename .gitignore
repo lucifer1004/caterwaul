@@ -2,6 +2,7 @@
 node_modules
 
 # Outputs
+.DS_Store
 out
 
 # IDEs
