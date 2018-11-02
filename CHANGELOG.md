@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2018.11.02
+
+### Added
+
+- Users can select which character to use after reaching certain level.
+- Use hearts to represent remaining lives.
+- Show levels and best score.
+- Difficulty will increase with levels.
+
 ## [0.1.1] - 2018.10.31
 
 ### Fixed

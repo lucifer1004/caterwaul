@@ -8,5 +8,5 @@ out
 .idea
 .vscode
 
-# Deloy
+# Deploy
 now.json

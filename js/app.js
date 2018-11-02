@@ -9,12 +9,15 @@ const PlayerMinX = -15;
 const PlayerMaxY = 450;
 const PlayerMinY = -20;
 const PlayerSpeed = 100;
-const allowedKeys = {
+const AllowedKeys = {
   ArrowLeft: 'left',
   ArrowUp: 'up',
   ArrowRight: 'right',
   ArrowDown: 'down',
+  KeyC: 'c',
 };
+const KeyLevels = [1, 2, 3, 5];
+const Characters = ['boy', 'cat-girl', 'horn-girl', 'pink-girl', 'princess-girl'];
 
 const allEnemies = [];
 
@@ -99,7 +102,12 @@ class Player {
     this.y = 450;
     this.vx = 0;
     this.vy = 0;
-    this.sprite = 'images/char-boy.png';
+    this.currentChar = 0;
+    this.unlockedChar = 1;
+    this.char = Characters.map((char) =>
+      'images/char-' + char + '.png'
+    );
+    this.sprite = this.char[0];
   }
 
   /** Check X-axis borders. */
@@ -125,6 +133,7 @@ class Player {
     if (this.y <= -19) {
       status.levelUp();
       this.restart();
+      generateEnemies();
     }
   }
 
@@ -139,10 +148,10 @@ class Player {
 
   /**
    * Triggered when any arrow key is pressed.
-   * @param {string} direction The direction the player will move towards,
+   * @param {string} key The pressed key,
   */
-  handleMoveStart(direction) {
-    switch (direction) {
+  handleKeyDown(key) {
+    switch (key) {
     case 'left':
       this.vx = -1 * PlayerSpeed;
       break;
@@ -161,11 +170,11 @@ class Player {
   }
 
   /**
-   * Triggered when any arrow key is released.
-   * @param {string} direction The direction the player will stop moving towards.
+   * Triggered when a key is released.
+   * @param {string} key The released key.
   */
-  handleMoveEnd(direction) {
-    switch (direction) {
+  handleKeyUp(key) {
+    switch (key) {
     case 'left':
       this.vx = 0;
       break;
@@ -178,10 +187,13 @@ class Player {
     case 'down':
       this.vy = 0;
       break;
+    case 'c':
+      this.sprite = this.char[(this.currentChar + 1) % this.unlockedChar];
+      this.currentChar ++;
+      break;
     default:
     }
   }
-
 
   /**
    * Update the player's position, required method for game.
@@ -218,9 +230,24 @@ class Status {
     this.lives = 3;
   }
 
+  /** Handle character unlock. */
+  unlockChar() {
+    if (KeyLevels.find((level) => {
+      return level === this.best;
+    }) !== undefined) {
+      if (player.unlockedChar < 5) {
+        alert(`New character unlocked: ${Characters[player.unlockedChar]}`);
+        player.unlockedChar ++;
+      }
+    }
+  }
+
   /** Handle level-up. */
   levelUp() {
-    if (this.level > this.best) this.best = this.level;
+    if (this.level > this.best) {
+      this.best = this.level;
+      this.unlockChar();
+    }
     this.level += 1;
     if (this.lives < 5) this.lives += 1;
   }
@@ -234,6 +261,7 @@ class Status {
       alert(`You have lost ${times(loseTimes)}! Please try again!`);
       player.restart();
       status.restart();
+      generateEnemies();
     }
   }
 
@@ -258,9 +286,9 @@ generateEnemies();
 
 // Add listeners for key presses.
 document.addEventListener('keydown', function(e) {
-  player.handleMoveStart(allowedKeys[e.code]);
+  player.handleKeyDown(AllowedKeys[e.code]);
 });
 
 document.addEventListener('keyup', function(e) {
-  player.handleMoveEnd(allowedKeys[e.code]);
+  player.handleKeyUp(AllowedKeys[e.code]);
 });

@@ -2,7 +2,7 @@
 
 ## 0.2.0
 
-- [ ] Display points instead of popping out alerts.
-- [ ] Users can select characters after reaching certain level.
-- [ ] Use hearts to represent remaining lives.
-- [ ] Difficulty will increase with levels.
+- [x] Users can select which character to use after reaching certain level.
+- [x] Use hearts to represent remaining lives.
+- [x] Show levels and best score.
+- [x] Difficulty will increase with levels.
