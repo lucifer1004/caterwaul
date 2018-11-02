@@ -28,6 +28,9 @@ const Engine = (function(global) {
   canvas.height = 606;
   doc.body.appendChild(canvas);
 
+  /** Set font globally. */
+  ctx.font = '30px Consolas';
+
   /* This function serves as the kickoff point for the game loop itself
      * and handles properly calling the update and render methods.
      */
@@ -161,6 +164,8 @@ const Engine = (function(global) {
       enemy.render();
     });
 
+    status.render();
+
     player.render();
   }
 
@@ -182,6 +187,7 @@ const Engine = (function(global) {
     'images/grass-block.png',
     'images/enemy-bug.png',
     'images/char-boy.png',
+    'images/Heart.png',
   ]);
   Resources.onReady(init);
 

@@ -8,6 +8,7 @@ const PlayerMaxX = 420;
 const PlayerMinX = -15;
 const PlayerMaxY = 450;
 const PlayerMinY = -20;
+const PlayerSpeed = 100;
 const allowedKeys = {
   ArrowLeft: 'left',
   ArrowUp: 'up',
@@ -18,12 +19,12 @@ const allowedKeys = {
 const allEnemies = [];
 
 const times = (num) => {
-  return num === 1 ? 'time' : 'times';
+  return num === 1 ? 'once' : num === 2 ? 'twice' : num + ' times';
 };
 
 const generateEnemies = () => {
   allEnemies.length = 0;
-  const enemyCount = 1 + Math.round(5 * Math.random());
+  const enemyCount = 2 * status.level + Math.round(2 * Math.random());
   for (let i = 0; i < enemyCount; i++) {
     allEnemies.push(new Enemy());
   }
@@ -39,19 +40,23 @@ class Enemy {
     this.sprite = 'images/enemy-bug.png';
     this.x = 500 * Math.random();
     this.y = 60 + 180 * Math.random();
-    this.vx = 200 * (1 + Math.random()) * (Math.round(Math.random()) - 0.5);
+    this.vx = 200 * (1 + 0.2 * status.level) * (1 + Math.random()) * (Math.round(Math.random()) - 0.5);
     this.vy = 0;
+    this.visible = true;
+  }
+
+  makeInvisible() {
+    this.visible = false;
   }
 
   /** Check if current enemy hits the player. */
   checkCollision() {
+    if (!this.visible) return;
     const dx = this.x - player.x;
     const dy = this.y - player.y;
     if (Math.abs(dx) <= 51 && Math.abs(dy) <= 51) {
-      const loseTimes = parseInt(myStorage.getItem('loseTimes'), 10) + 1;
-      myStorage.setItem('loseTimes', loseTimes);
-      alert(`You have lost ${loseTimes} ${times(loseTimes)}!`);
-      player.restart();
+      status.loseLife();
+      this.makeInvisible();
     }
   }
 
@@ -79,12 +84,12 @@ class Enemy {
 
   /** Draw the enemy on the screen, required method for game. */
   render() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    if (this.visible) ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
 }
 
 /**
- * The player.
+ * The player we control.
  * @constructor
  */
 class Player {
@@ -118,9 +123,7 @@ class Player {
   /** Check if the player wins. */
   checkWin() {
     if (this.y <= -19) {
-      const winTimes = parseInt(myStorage.getItem('winTimes'), 10) + 1;
-      myStorage.setItem('winTimes', winTimes);
-      alert(`You have won ${winTimes} ${times(winTimes)}!`);
+      status.levelUp();
       this.restart();
     }
   }
@@ -141,16 +144,16 @@ class Player {
   handleMoveStart(direction) {
     switch (direction) {
     case 'left':
-      this.vx = -100;
+      this.vx = -1 * PlayerSpeed;
       break;
     case 'right':
-      this.vx = 100;
+      this.vx = PlayerSpeed;
       break;
     case 'up':
-      this.vy = -100;
+      this.vy = -1 * PlayerSpeed;
       break;
     case 'down':
-      this.vy = 100;
+      this.vy = PlayerSpeed;
       break;
     default:
     }
@@ -191,22 +194,69 @@ class Player {
     this.checkBorder();
   }
 
-
   /** Draw the player on the screen. */
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
 }
 
+/**
+ * Current status of the game.
+ * @constructor
+ */
+class Status {
+  /** Constructor of the status class. */
+  constructor() {
+    this.level = 1;
+    this.best = 0;
+    this.lives = 3;
+  }
+
+  /** Reset game status. */
+  restart() {
+    this.level = 1;
+    this.lives = 3;
+  }
+
+  /** Handle level-up. */
+  levelUp() {
+    if (this.level > this.best) this.best = this.level;
+    this.level += 1;
+    if (this.lives < 5) this.lives += 1;
+  }
+
+  /** Handle life loss. */
+  loseLife() {
+    this.lives -= 1;
+    if (this.lives === 0) {
+      const loseTimes = parseInt(myStorage.getItem('loseTimes'), 10) + 1;
+      myStorage.setItem('loseTimes', loseTimes);
+      alert(`You have lost ${times(loseTimes)}! Please try again!`);
+      player.restart();
+      status.restart();
+    }
+  }
+
+  /** Render game status. */
+  render() {
+    for (let i = 0; i < this.lives; i++) {
+      ctx.drawImage(Resources.get('images/Heart.png'), 400 - 50 * i, 420);
+    }
+    ctx.fillText('Level: ' + this.level, 20, 550);
+    ctx.fillText('Best:  ' + this.best, 20, 580);
+  }
+}
+
 // Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+// Place all enemy objects in an array called allEnemies.
+// Place the player object in a variable called player.
+// Place all game information in a variable called status.
 
 const player = new Player();
+const status = new Status();
 generateEnemies();
 
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// Add listeners for key presses.
 document.addEventListener('keydown', function(e) {
   player.handleMoveStart(allowedKeys[e.code]);
 });
