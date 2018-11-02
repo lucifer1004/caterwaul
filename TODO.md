@@ -6,7 +6,7 @@
 - [ ] Add backgrounds and skills for each character.
 - [ ] Add sound effects.
 - [ ] Enable acceleration.
-- [ ] Press P to pause the game.
+- [x] Press P to pause the game.
 
 ## 0.2.0
 

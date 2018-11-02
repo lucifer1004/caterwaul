@@ -7,6 +7,7 @@ export default class Info {
     this.best = 0;
     this.level = 1;
     this.lives = 3;
+    this.paused = false;
   }
 
   /**
@@ -25,6 +26,16 @@ export default class Info {
     this.lives -= 1;
   }
 
+  /** Pause */
+  pause() {
+    this.paused = true;
+  }
+
+  /** Resume */
+  resume() {
+    this.paused = false;
+  }
+
   /** Reset game info. */
   reset() {
     this.level = 1;
@@ -38,6 +49,7 @@ export default class Info {
     for (let i = 0; i < this.lives; i++) {
       ctx.drawImage(res.get('images/Heart.png'), 400 - 50 * i, 420);
     }
+    if (this.paused) ctx.strokeText('PAUSED', 202, 202);
     ctx.fillText('Level: ' + this.level, 20, 550);
     ctx.fillText('Best:  ' + this.best, 20, 580);
   }

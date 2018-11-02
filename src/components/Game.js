@@ -99,6 +99,7 @@ export default class Game {
       }
       break;
     default:
+      if (this.paused) this.resume();
     }
     this.checkBorder();
   }
@@ -125,7 +126,6 @@ export default class Game {
       this.player.changeChar();
       break;
     default:
-      if (this.paused) this.resume();
     }
   }
 
@@ -145,12 +145,14 @@ export default class Game {
   /** Pause the game. */
   pause() {
     this.paused = true;
+    this.info.pause();
     this.enemies.forEach((enemy) => enemy.save());
   }
 
   /** Resume the game. */
   resume() {
     this.paused = false;
+    this.info.resume();
     this.enemies.forEach((enemy) => enemy.restore());
   }
 

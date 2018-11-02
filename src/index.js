@@ -32,17 +32,17 @@ ctx.font = '30px Consolas';
 
 // Add listeners for key presses.
 document.addEventListener('keydown', function(e) {
-  game.handleKeyDown(AllowedKeys[e.code]);
-});
-
-document.addEventListener('keyup', function(e) {
-  if (game.paused) {
+  if (game.paused && e.code !== 'KeyP') {
     game.resume();
     lastTime = Date.now();
     window.requestAnimationFrame(main);
   }
+  if (e.code !== 'KeyP') backgroundSound.play();
+  game.handleKeyDown(AllowedKeys[e.code]);
+});
+
+document.addEventListener('keyup', function(e) {
   game.handleKeyUp(AllowedKeys[e.code]);
-  backgroundSound.play();
 });
 
 function init() {
