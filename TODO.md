@@ -4,8 +4,8 @@
 
 - [ ] Add a character-selecting stage.
 - [ ] Add backgrounds and skills for each character.
-- [ ] Add sound effects.
-- [ ] Enable acceleration.
+- [x] Add sound effects.
+- [x] Enable acceleration.
 - [x] Press P to pause the game.
 
 ## 0.2.0

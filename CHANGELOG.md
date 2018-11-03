@@ -9,9 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Users can press P to pause the game, and press any other key to resume.
+- Background music which will be played faster at higher levels.
+- Sound effects for crashes and level-ups.
+- Users can press P to pause the game, and press any other key to resume. Game will be automatically paused when users lose a game.
 
 ### Changed
+
+- Player movement has acceleration now.
+
+### Refactored
 
 - The source code is completely refactored. Now it is much more structured.
 

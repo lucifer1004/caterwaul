@@ -5,8 +5,6 @@ import Scene from './Scene.js';
 import Sound from './Sound.js';
 import {Characters, KeyLevels} from '../constants.js';
 
-const PlayerSpeed = 200;
-
 /**
  * Main class of the game.
  * @constructor
@@ -82,16 +80,16 @@ export default class Game {
   handleKeyDown(key) {
     switch (key) {
     case 'left':
-      this.player.vx = -1 * PlayerSpeed;
+      this.player.startX(-1);
       break;
     case 'right':
-      this.player.vx = PlayerSpeed;
+      this.player.startX(1);
       break;
     case 'up':
-      this.player.vy = -1 * PlayerSpeed;
+      this.player.startY(-1);
       break;
     case 'down':
-      this.player.vy = PlayerSpeed;
+      this.player.startY(1);
       break;
     case 'p':
       if (!this.paused) {
@@ -112,16 +110,16 @@ export default class Game {
   handleKeyUp(key) {
     switch (key) {
     case 'left':
-      this.player.vx = 0;
+      this.player.stopX();
       break;
     case 'right':
-      this.player.vx = 0;
+      this.player.stopX();
       break;
     case 'up':
-      this.player.vy = 0;
+      this.player.stopY();
       break;
     case 'down':
-      this.player.vy = 0;
+      this.player.stopY();
       break;
     case 'c':
       this.player.changeChar();
