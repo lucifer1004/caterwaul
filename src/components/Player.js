@@ -1,12 +1,13 @@
-import {MaxSpeed, OrigSpeed} from '../constants.js';
-
-const PlayerMaxX = 420;
-const PlayerMinX = -15;
-const PlayerMaxY = 450;
-const PlayerMinY = -20;
-const PlayerAcc = 50;
-
-const Characters = ['boy', 'cat-girl', 'horn-girl', 'pink-girl', 'princess-girl'];
+import {
+  Characters,
+  MaxSpeed,
+  OrigSpeed,
+  PlayerAcc,
+  PlayerMaxX,
+  PlayerMaxY,
+  PlayerMinX,
+  PlayerMinY,
+} from '../constants.js';
 
 /**
  * Our player

@@ -1,9 +1,16 @@
 # TODO-list
 
+## 0.4.0
+
+- [ ] Users should be able to customize the chessboard.
+
+## 0.3.1
+
+- [ ] Fix #2
+
 ## 0.3.0
 
-- [ ] Add a character-selecting stage.
-- [ ] Add backgrounds and skills for each character.
+- [x] Add backgrounds for each character.
 - [x] Add sound effects.
 - [x] Enable acceleration.
 - [x] Press P to pause the game.

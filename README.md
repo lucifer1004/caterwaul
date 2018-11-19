@@ -7,5 +7,7 @@ The simplest way is to download or clone this project, then open the `index.html
 ## How to play
 
 * User arrow keys to control the player.
-* Avoid being hit by enemies! Once you are hit, you lose this game.
-* Go to the water, and you are the winner :tada: !
+* Avoid being hit by enemies! Once you are hit, you lose a :heart:, when you have no :heart:, you will lose the game.
+* Go to the water, and you will enter the next level :tada: !
+* In higher levels, there will be more enemies which also move faster.
+* At certain levels, new characters will be unlocked.

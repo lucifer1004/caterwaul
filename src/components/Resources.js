@@ -20,7 +20,12 @@ export default class Resource {
       'images/char-horn-girl.png',
       'images/char-pink-girl.png',
       'images/char-princess-girl.png',
+      'images/char-cat-girl-gray.png',
+      'images/char-horn-girl-gray.png',
+      'images/char-pink-girl-gray.png',
+      'images/char-princess-girl-gray.png',
       'images/Heart.png',
+      'images/Selector.png',
     ]);
     this.onReady(init);
   }

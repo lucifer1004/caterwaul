@@ -1,9 +1,9 @@
+import CharacterPanel from './panels/CharacterPanel.js';
 import Enemy from './Enemy.js';
 import Info from './Info.js';
 import Player from './Player.js';
 import Scene from './Scene.js';
-import Sound from './Sound.js';
-import {Characters, KeyLevels} from '../constants.js';
+import {KeyLevels} from '../constants.js';
 
 /**
  * Main class of the game.
@@ -12,11 +12,13 @@ import {Characters, KeyLevels} from '../constants.js';
 export default class Game {
   /** Constructor of the Game class. */
   constructor() {
+    this.charPanel = new CharacterPanel(); // Character panel
     this.enemies = []; // Enemies
     this.info = new Info(); // Game information
     this.paused = false; // Whether the game is paused
     this.player = new Player(); // Player
     this.scene = new Scene(); // Scene
+    this.state = 'main'; // State of the game: main, char...
   }
 
   /** Check if the player is at the border */
@@ -78,29 +80,34 @@ export default class Game {
    * @param {string} key The pressed key,
   */
   handleKeyDown(key) {
-    switch (key) {
-    case 'left':
-      this.player.startX(-1);
-      break;
-    case 'right':
-      this.player.startX(1);
-      break;
-    case 'up':
-      this.player.startY(-1);
-      break;
-    case 'down':
-      this.player.startY(1);
-      break;
-    case 'p':
-      if (!this.paused) {
-        this.pause();
-        backgroundSound.stop();
+    switch (this.state) {
+    case 'main':
+      switch (key) {
+      case 'left':
+        this.player.startX(-1);
+        break;
+      case 'right':
+        this.player.startX(1);
+        break;
+      case 'up':
+        this.player.startY(-1);
+        break;
+      case 'down':
+        this.player.startY(1);
+        break;
+      case 'p':
+        if (!this.paused) {
+          this.pause();
+          backgroundSound.stop();
+        }
+        break;
+      default:
+        if (this.paused) this.resume();
       }
+      this.checkBorder();
       break;
     default:
-      if (this.paused) this.resume();
     }
-    this.checkBorder();
   }
 
   /**
@@ -108,21 +115,42 @@ export default class Game {
     * @param {string} key The released key.
   */
   handleKeyUp(key) {
-    switch (key) {
-    case 'left':
-      this.player.stopX();
+    switch (this.state) {
+    case 'main':
+      switch (key) {
+      case 'left':
+        this.player.stopX();
+        break;
+      case 'right':
+        this.player.stopX();
+        break;
+      case 'up':
+        this.player.stopY();
+        break;
+      case 'down':
+        this.player.stopY();
+        break;
+      case 'c':
+        this.player.changeChar();
+        break;
+      case 'a':
+        this.openCharPanel();
+        break;
+      default:
+      }
       break;
-    case 'right':
-      this.player.stopX();
-      break;
-    case 'up':
-      this.player.stopY();
-      break;
-    case 'down':
-      this.player.stopY();
-      break;
-    case 'c':
-      this.player.changeChar();
+    case 'char':
+      switch (key) {
+      case 'left':
+        this.charPanel.last();
+        break;
+      case 'right':
+        this.charPanel.next();
+        break;
+      case 'x':
+        this.closeCharPanel();
+        break;
+      }
       break;
     default:
     }
@@ -131,7 +159,7 @@ export default class Game {
   /** Triggered when current level is cleared. */
   levelUp() {
     levelUpSound.play();
-    backgroundSound.changeRate(1 + 0.3 * this.info.level);
+    backgroundSound.changeRate(1 + 0.2 * this.info.level);
     this.info.levelUp();
   }
 
@@ -139,6 +167,19 @@ export default class Game {
   loseLife() {
     crashSound.play();
     this.info.loseLife();
+  }
+
+  /** Open character panel. */
+  openCharPanel() {
+    this.charPanel.show(this.player.currentChar, this.player.unlockedChar);
+    this.state = 'char';
+    this.pause();
+  }
+
+  /** Close character panel. */
+  closeCharPanel() {
+    this.charPanel.hide();
+    this.state = 'main';
   }
 
   /** Pause the game. */
@@ -196,5 +237,6 @@ export default class Game {
     this.enemies.forEach((enemy) => enemy.render());
     this.player.render();
     this.info.render();
+    this.charPanel.render();
   }
 }

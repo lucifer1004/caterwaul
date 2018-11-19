@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Background music which will be played faster at higher levels.
 - Sound effects for crashes and level-ups.
 - Users can press P to pause the game, and press any other key to resume. Game will be automatically paused when users lose a game.
+- Users can press A to open character-introduction panel, press LEFT or RIGHT to surf, and press X to close.
 
 ### Changed
 
